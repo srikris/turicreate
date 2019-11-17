@@ -163,10 +163,13 @@ std::shared_ptr<MLModelWrapper> export_object_detector_model(
     size_t image_height, size_t num_classes, size_t num_predictions,
     flex_dict user_defined_metadata, flex_list class_labels,
     const std::string& input_name,
-    std::map<std::string, flexible_type> options) {
+    std::map<std::string, flexible_type> options,
+    const std::string& short_desc) {
+
   // Set up Pipeline
   CoreML::Specification::Model model_pipeline;
   model_pipeline.set_specificationversion(3);
+
   ModelDescription* pipeline_desc = model_pipeline.mutable_description();
 
   // Add NeuralNetwork model to pipeline
@@ -229,9 +232,9 @@ std::shared_ptr<MLModelWrapper> export_object_detector_model(
 
     // Add metadata.
     model_wrapper->add_metadata({
-        { "user_defined", std::move(user_defined_metadata) }
+        {"short_description", short_desc},
+        {"user_defined", std::move(user_defined_metadata)}
     });
-
     return model_wrapper;
   }
 
